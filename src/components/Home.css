@@ -7,7 +7,7 @@
   min-height: calc(100vh - 120px); /* Subtract navbar + footer height */
   margin-top: 60px; /* Space for navbar */
   margin-bottom: 60px; /* Space for footer */
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4a6fa5 100%);
+  background: linear-gradient(135deg, #3195e2 0%, #2567da 50%, #3b506f 100%); 
   color: white;
   text-align: center;
   padding: 2rem;
@@ -61,7 +61,7 @@
   font-weight: 800;
   letter-spacing: -0.5px;
   background: linear-gradient(90deg, #ffffff, #e0e0ff);
-  -webkit-background-clip: text;
+  -webkit-background-clip: text; 
   -webkit-text-fill-color: transparent;
   text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
@@ -124,12 +124,12 @@
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.1);
+  background:rgba(20, 20, 20, 0.6);
   border-radius: 15px;
   padding: 1.5rem;
   width: 200px;
   backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #000;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
