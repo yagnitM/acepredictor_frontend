@@ -60,11 +60,15 @@
   margin-bottom: 1.5rem;
   font-weight: 800;
   letter-spacing: -0.5px;
+  color: #fff; /* Fallback color */
   background: linear-gradient(90deg, #ffffff, #e0e0ff);
-  -webkit-background-clip: text; 
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
+
 
 .home-description {
   font-size: 1.25rem;
