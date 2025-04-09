@@ -1,0 +1,256 @@
+.home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%; /* Take up 80% of the width */
+  margin: 0 auto; /* Center horizontally */
+  min-height: calc(100vh - 120px); /* Subtract navbar + footer height */
+  margin-top: 60px; /* Space for navbar */
+  margin-bottom: 60px; /* Space for footer */
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #4a6fa5 100%);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px; /* Add rounded corners for the contained look */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Add shadow for elevation */
+}
+
+/* Animated background elements */
+.home::before {
+  content: "";
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  top: -50px;
+  right: -50px;
+  z-index: 0;
+}
+
+.home::after {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  bottom: -100px;
+  left: -100px;
+  z-index: 0;
+}
+
+.home-content {
+  max-width: 800px;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 1s ease-in-out;
+  background: rgba(46, 70, 120, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home-title {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #ffffff, #e0e0ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.home-description {
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.home-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: linear-gradient(90deg, #f7b733, #fc4a1a);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(252, 74, 26, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(252, 74, 26, 0.6);
+}
+
+.home-btn.secondary {
+  background: transparent;
+  border: 2px solid #fff;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.home-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Features section */
+.home-features {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 1.5rem;
+  width: 200px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #f7b733;
+}
+
+.feature-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.feature-description {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Background container */
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f5f5; /* Light background for the whole page */
+  padding-top: 60px; /* Account for fixed navbar */
+  padding-bottom: 40px; /* Account for footer */
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .home {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .home {
+    width: 95%;
+    padding: 1.5rem;
+  }
+  
+  .home-content {
+    padding: 2rem;
+  }
+  
+  .home-title {
+    font-size: 2.5rem;
+  }
+  
+  .home-description {
+    font-size: 1.1rem;
+  }
+  
+  .home-features {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .feature-card {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Floating animation for circles */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Add a subtle pulse animation to the CTA button */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(252, 74, 26, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 25px rgba(252, 74, 26, 0.6);
+  }
+  100% {
+    box-shadow: 0 4px 15px rgba(252, 74, 26, 0.4);
+  }
+}
+
+.home-btn:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.home-btn:hover:after {
+  left: 100%;
+}
