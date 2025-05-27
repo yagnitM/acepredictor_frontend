@@ -10,42 +10,37 @@ const Predict = () => {
   const [showSuggestions1, setShowSuggestions1] = useState(false);
   const [showSuggestions2, setShowSuggestions2] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
 
-  // Enhanced mock data with rankings
-  const mockPlayers = [
-    { name: 'Novak Djokovic', ranking: 1, country: '🇷🇸' },
-    { name: 'Carlos Alcaraz', ranking: 2, country: '🇪🇸' },
-    { name: 'Jannik Sinner', ranking: 3, country: '🇮🇹' },
-    { name: 'Daniil Medvedev', ranking: 4, country: '🇷🇺' },
-    { name: 'Rafael Nadal', ranking: 5, country: '🇪🇸' },
-    { name: 'Alexander Zverev', ranking: 6, country: '🇩🇪' },
-    { name: 'Stefanos Tsitsipas', ranking: 7, country: '🇬🇷' },
-    { name: 'Casper Ruud', ranking: 8, country: '🇳🇴' },
-    { name: 'Andrey Rublev', ranking: 9, country: '🇷🇺' },
-    { name: 'Taylor Fritz', ranking: 10, country: '🇺🇸' }
-  ];
-
+  // Debounced fetch for player suggestions
   useEffect(() => {
     const fetchSuggestions = async (query, setSuggestions, setShowSuggestions) => {
-      if (!query) {
+      if (!query.trim()) {
         setSuggestions([]);
         setShowSuggestions(false);
         return;
       }
 
-      const results = mockPlayers.filter(player =>
-        player.name.toLowerCase().includes(query.toLowerCase())
-      );
-      setSuggestions(results);
-      setShowSuggestions(true);
+      try {
+        const response = await fetch(`http://localhost:8000/players?query=${encodeURIComponent(query)}`);
+        if (!response.ok) throw new Error('Failed to fetch player suggestions');
+        const data = await response.json();
+        setSuggestions(data);
+        setShowSuggestions(true);
+      } catch (err) {
+        console.error(err);
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
     };
 
-    const timeoutId1 = setTimeout(() => fetchSuggestions(player1, setSuggestions1, setShowSuggestions1), 300);
-    const timeoutId2 = setTimeout(() => fetchSuggestions(player2, setSuggestions2, setShowSuggestions2), 300);
+    const timeout1 = setTimeout(() => fetchSuggestions(player1, setSuggestions1, setShowSuggestions1), 300);
+    const timeout2 = setTimeout(() => fetchSuggestions(player2, setSuggestions2, setShowSuggestions2), 300);
 
     return () => {
-      clearTimeout(timeoutId1);
-      clearTimeout(timeoutId2);
+      clearTimeout(timeout1);
+      clearTimeout(timeout2);
     };
   }, [player1, player2]);
 
@@ -62,13 +57,28 @@ const Predict = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log({ player1, player2, surface });
+    setResult(null);
+    setError('');
+
+    try {
+      const response = await fetch("http://localhost:8000/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ player1, player2, surface })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setResult(data);
+      } else {
+        setError(data.error || "Something went wrong with the prediction.");
+      }
+    } catch (err) {
+      setError("Failed to connect to prediction server.");
+    } finally {
       setIsLoading(false);
-      // Here you would make your actual prediction request
-    }, 1500);
+    }
   };
 
   const getSurfaceEmoji = (surfaceType) => {
@@ -83,33 +93,21 @@ const Predict = () => {
   return (
     <div className="predict-container">
       <div className="predict-wrapper">
-        {/* Header */}
         <div className="predict-header">
-          <div className="header-icon">
-            <span className="icon-tennis">🎾</span>
-          </div>
+          <div className="header-icon"><span className="icon-tennis">🎾</span></div>
           <h1 className="predict-title">Tennis Match Predictor</h1>
           <p className="predict-subtitle">Predict the outcome of tennis matches using AI analysis</p>
         </div>
 
-        {/* Main Card */}
         <div className="predict-card">
           <div className="card-header">
-            <div className="header-content">
-              <span className="users-icon">👥</span>
-              <h2 className="card-title">Match Setup</h2>
-            </div>
+            <div className="header-content"><span className="users-icon">👥</span><h2 className="card-title">Match Setup</h2></div>
           </div>
 
           <form className="predict-form" onSubmit={handleSubmit}>
             {/* Player 1 Input */}
             <div className="form-group">
-              <label className="form-label">
-                <div className="player-badge player-1-badge">
-                  <span>1</span>
-                </div>
-                Player 1
-              </label>
+              <label className="form-label"><div className="player-badge player-1-badge"><span>1</span></div>Player 1</label>
               <div className="input-container">
                 <div className="input-wrapper">
                   <span className="search-icon">🔍</span>
@@ -129,16 +127,10 @@ const Predict = () => {
                     {suggestions1.map((player, index) => (
                       <div
                         key={index}
-                        onClick={() => handlePlayerSelect(player.name, 1)}
+                        onClick={() => handlePlayerSelect(player, 1)}
                         className="suggestion-item"
                       >
-                        <div className="player-info">
-                          <span className="player-flag">{player.country}</span>
-                          <div className="player-details">
-                            <div className="player-name">{player.name}</div>
-                            <div className="player-ranking">ATP Ranking #{player.ranking}</div>
-                          </div>
-                        </div>
+                        {player}
                       </div>
                     ))}
                   </div>
@@ -155,12 +147,7 @@ const Predict = () => {
 
             {/* Player 2 Input */}
             <div className="form-group">
-              <label className="form-label">
-                <div className="player-badge player-2-badge">
-                  <span>2</span>
-                </div>
-                Player 2
-              </label>
+              <label className="form-label"><div className="player-badge player-2-badge"><span>2</span></div>Player 2</label>
               <div className="input-container">
                 <div className="input-wrapper">
                   <span className="search-icon">🔍</span>
@@ -180,16 +167,10 @@ const Predict = () => {
                     {suggestions2.map((player, index) => (
                       <div
                         key={index}
-                        onClick={() => handlePlayerSelect(player.name, 2)}
+                        onClick={() => handlePlayerSelect(player, 2)}
                         className="suggestion-item"
                       >
-                        <div className="player-info">
-                          <span className="player-flag">{player.country}</span>
-                          <div className="player-details">
-                            <div className="player-name">{player.name}</div>
-                            <div className="player-ranking">ATP Ranking #{player.ranking}</div>
-                          </div>
-                        </div>
+                        {player}
                       </div>
                     ))}
                   </div>
@@ -199,10 +180,7 @@ const Predict = () => {
 
             {/* Surface Selection */}
             <div className="form-group">
-              <label className="form-label">
-                <span className="calendar-icon">📅</span>
-                Court Surface
-              </label>
+              <label className="form-label"><span className="calendar-icon">📅</span> Court Surface</label>
               <div className="surface-grid">
                 {['Hard', 'Clay', 'Grass'].map((surfaceType) => (
                   <div
@@ -225,20 +203,29 @@ const Predict = () => {
             >
               {isLoading ? (
                 <div className="btn-content">
-                  <div className="loading-spinner"></div>
-                  Analyzing Match...
+                  <div className="loading-spinner"></div> Analyzing Match...
                 </div>
               ) : (
                 <div className="btn-content">
-                  <span className="trending-icon">📈</span>
-                  Predict Match Outcome
+                  <span className="trending-icon">📈</span> Predict Match Outcome
                 </div>
               )}
             </button>
           </form>
+
+          {/* Display Prediction Result */}
+          {result && (
+            <div className="result-box">
+              <h3>Prediction Result</h3>
+              <p><strong>Predicted Winner:</strong> {result.winner}</p>
+              <p><strong>Confidence:</strong> {result.confidence}%</p>
+            </div>
+          )}
+
+          {/* Error Display */}
+          {error && <p className="error-msg">{error}</p>}
         </div>
 
-        {/* Footer */}
         <div className="predict-footer">
           <p>Powered by advanced tennis analytics and machine learning</p>
         </div>
