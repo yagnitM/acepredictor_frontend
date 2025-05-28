@@ -23,7 +23,8 @@ const Predict = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8000/players?query=${encodeURIComponent(query)}`);
+        const response = await fetch(`https://predict-backend-ews4.onrender.com/players?query=${encodeURIComponent(query)}
+`);
         if (!response.ok) throw new Error('Failed to fetch player suggestions');
         const data = await response.json();
         setSuggestions(data);
@@ -61,7 +62,7 @@ const Predict = () => {
     setError('');
 
     try {
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch("https://predict-backend-ews4.onrender.com/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ player1, player2, surface })
