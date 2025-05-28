@@ -61,7 +61,7 @@ const Predict = () => {
     setError('');
 
     try {
-      const response = await fetch("https://predict-backend-ews4.onrender.com/predict", {
+      const response = await fetch("https://predict-backend-ews4.onrender.com//predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ player1, player2, surface })
