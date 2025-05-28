@@ -23,8 +23,7 @@ const Predict = () => {
       }
 
       try {
-        const response = await fetch(`https://predict-backend-ews4.onrender.com/players?query=${encodeURIComponent(query)}
-`);
+        const response = await fetch(`https://predict-backend-ews4.onrender.com/players?query=${encodeURIComponent(query)}`);
         if (!response.ok) throw new Error('Failed to fetch player suggestions');
         const data = await response.json();
         setSuggestions(data);
@@ -54,7 +53,7 @@ const Predict = () => {
       setShowSuggestions2(false);
     }
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -236,3 +235,4 @@ const Predict = () => {
 };
 
 export default Predict;
+
