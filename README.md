@@ -1,12 +1,12 @@
-# React + Vite
+A Machine Learning-based tennis match predictor.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AcePredictor is a web application that predicts the outcome of tennis matches based on player selection and surface type (Hard, Clay, or Grass). Users can select ATP players who have played official tour-level matches since 2000, and view predictions including the likely winner and their winning probability.
 
-Currently, two official plugins are available:
+The prediction engine is trained on over 68,000 match data points spanning 25 years, sourced from the JeffSackmann tennis datasets.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Tech Stack:
+Frontend: React, deployed on Vercel
+Backend: Python, FastAPI, deployed on Render
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+![Home component](image.png)
+![Prediction Component](image-1.png)
